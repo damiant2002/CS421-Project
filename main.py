@@ -52,6 +52,21 @@ class Pay(db.Model):
         self.overtime = overtime
         self.hours = hours
 
+class Schedule(db.model):
+    __tablename__ = "schedules"
+
+    username = db.Column(db.String(120), primary_key=True)
+    date = date = db.Column(db.Date, primary_key=True)
+    start_time = db.Column(db.Time)
+    end_time = db.Column(db.Time)
+    description = db.Column(db.String(255))
+
+    def __init__(self, username, date, start_time, end_time, description):
+        self.username = username
+        self.date = date
+        self.start_time = start_time
+        self.end_time = end_time
+        self.description = description
 
 # TODO: continue making appropriate tables
 
