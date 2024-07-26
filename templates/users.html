@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block title %}Employees{% endblock %}
+<head>
+  {% block styles %}
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+    th,
+    td {
+      padding: 4px;
+    }
+    th {
+      background-color: lightgrey;
+    }
+    .odd {
+      background-color: #f2f2f2; /* Light grey for odd rows */
+    }
+
+    .even {
+      background-color: #ffffff; /* White for even rows */
+    }
+  </style>
+
+  {% endblock %}
+</head>
+<body>
+  {% block content %}
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Hire Date</th>
+        <th>Admin Status</th>
+      </tr>
+    </thead>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.address if user.address else 'N/A' }}</td>
+      <td>{{ user.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+      <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endblock %}
+</body>

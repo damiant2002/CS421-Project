@@ -140,6 +140,7 @@ def register():
             )
             db.session.add(user)
             db.session.commit()
+            login_user(user)
             flash("Admin account has been created!", "success")
             return redirect(url_for("thank_you"))
         else:
@@ -212,20 +213,25 @@ def PayView():
     if (not current_user):
         return redirect(url_for("login"))
     
-    userName = current_user.username
+    if is_admin(current_user):
+        pays = PayRoll.query.all()
+        return render_template('PayView.html', pays=pays)
     
-    paySlip = PayRoll.query.filter(PayRoll.username == userName).first()
-    if (not paySlip):
-        rate = round(random.uniform(20, 35), 2)
+    else:    
+        userName = current_user.username
+        
+        paySlip = PayRoll.query.filter(PayRoll.username == userName).first()
+        if (not paySlip):
+            rate = round(random.uniform(20, 35), 2)
 
-        newEmployeePaySlip = PayRoll(userName, rate, 1.0, 0, 0, 0, 0, 0, 0)
-        paySlip = newEmployeePaySlip
+            newEmployeePaySlip = PayRoll(userName, rate, 1.0, 0, 0, 0, 0, 0, 0)
+            paySlip = newEmployeePaySlip
 
-        db.session.add(newEmployeePaySlip)
-        db.session.commit()
-    
-    else:
-        paySlip = PayRoll.query.filter(PayRoll.username == userName).order_by(desc(PayRoll.payPeriod)).first()
+            db.session.add(newEmployeePaySlip)
+            db.session.commit()
+        
+        else:
+            paySlip = PayRoll.query.filter(PayRoll.username == userName).order_by(desc(PayRoll.payPeriod)).first()
 
     payRate = paySlip.payRate
 
@@ -257,7 +263,14 @@ def PayView():
 
     return render_template("PayView.html", pays=allPaySlips)
 
-
+@app.route("/users")
+def users():
+    if (not current_user):
+        return redirect(url_for("login")) 
+    users = User.query.all()
+    return render_template('users.html', users=users)
+    
+    
 def calcPayPeriod(period: float):
     period = period + 0.01
     period = round(period, 2)
@@ -267,6 +280,19 @@ def calcPayPeriod(period: float):
         return test
     else:
         return period
+
+@app.context_processor
+def inject_functions():
+    return dict(is_admin=is_admin)
+
+def is_admin(user):
+    if user.is_authenticated:
+        return user.is_admin
+    return False
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

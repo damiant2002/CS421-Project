@@ -1,61 +1,89 @@
-{% extends "base.html" %}
-{% block title %}PayView{% endblock %}
+{% extends "base.html" %} {% block title %}PayView{% endblock %}
 <head>
-    {% block styles %}
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 4px;
-        }
-        th {
-            background-color: lightgrey;
-        }
-        .odd {
-            background-color: #f2f2f2; /* Light grey for odd rows */
-        }
+  {% block styles %}
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+    th,
+    td {
+      padding: 4px;
+    }
+    th {
+      background-color: lightgrey;
+    }
+    .odd {
+      background-color: #f2f2f2; /* Light grey for odd rows */
+    }
 
-        .even {
-            background-color: #ffffff; /* White for even rows */
-}
+    .even {
+      background-color: #ffffff; /* White for even rows */
+    }
+  </style>
 
-    </style>
-    
-    {% endblock %}
-    
+  {% endblock %}
 </head>
 <body>
-    {% block content %}
-    <table>
-        <tr>
-            <th>Username</th>
-            <th>Pay Rate</th>
-            <th>Pay Period</th>
-            <th>YTD</th>
-            <th>Hours</th>
-            <th>Gross</th>
-            <th>Tax</th>
-            <th>Overtime</th>
-            <th>Net</th>
-        </tr>
-        {% for pay in pays %}
-        <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
-            <td>{{ pay.username }}</td>
-            <td>{{ pay.payRate }}</td>
-            <td>{{ pay.payPeriod }}</td>
-            <td>{{ pay.YTD }}</td>
-            <td>{{ pay.hours }}</td>
-            <td>{{ pay.gross }}</td>
-            <td>{{ pay.tax }}</td>
-            <td>{{ pay.OT }}</td>
-            <td>{{ pay.net }}</td>
-        </tr>
-        {% endfor %}
-      </table> 
-    {% endblock %}
+  {% block content %} {% if is_admin(current_user) %}
+  <table>
+    <tr>
+      <th>Username</th>
+      <th>Pay Rate</th>
+      <th>Pay Period</th>
+      <th>YTD</th>
+      <th>Hours</th>
+      <th>Gross</th>
+      <th>Tax</th>
+      <th>Overtime</th>
+      <th>Net</th>
+    </tr>
+    {% for pay in pays %}
+    <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
+      <td>{{ pay.username }}</td>
+      <td>{{ pay.payRate }}</td>
+      <td>{{ pay.payPeriod }}</td>
+      <td>{{ pay.YTD }}</td>
+      <td>{{ pay.hours }}</td>
+      <td>{{ pay.gross }}</td>
+      <td>{{ pay.tax }}</td>
+      <td>{{ pay.OT }}</td>
+      <td>{{ pay.net }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <table>
+    <tr>
+      <th>Username</th>
+      <th>Pay Rate</th>
+      <th>Pay Period</th>
+      <th>YTD</th>
+      <th>Hours</th>
+      <th>Gross</th>
+      <th>Tax</th>
+      <th>Overtime</th>
+      <th>Net</th>
+    </tr>
+    {% for pay in pays %}
+    <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
+      <td>{{ pay.username }}</td>
+      <td>{{ pay.payRate }}</td>
+      <td>{{ pay.payPeriod }}</td>
+      <td>{{ pay.YTD }}</td>
+      <td>{{ pay.hours }}</td>
+      <td>{{ pay.gross }}</td>
+      <td>{{ pay.tax }}</td>
+      <td>{{ pay.OT }}</td>
+      <td>{{ pay.net }}</td>
+    </tr>
+    {% endfor %}{% endif %}
+  </table>
+
+  {% endblock %}
 </body>
