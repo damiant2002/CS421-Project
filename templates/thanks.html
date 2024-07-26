@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Thank You{% endblock %}
+{% block content %}
+    <h1>Thank You for Signing Up!</h1>
+    <p>Your account has been created successfully.</p>
+    <p><a href="{{ url_for('profile') }}">Go to Profile</a></p>
+{% endblock %}
