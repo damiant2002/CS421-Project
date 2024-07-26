@@ -119,6 +119,7 @@ def register():
                 username=form.username.data,
                 email=form.email.data,
                 password=hashed_password,
+                is_admin=False
             )
             db.session.add(user)
             db.session.commit()
