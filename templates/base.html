@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %} - Employee Management System</title>
+    {% block styles %}{% endblock %}
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -109,9 +110,11 @@
                 {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('profile') }}">Profile</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    <li><a href="{{ url_for('PayView') }}">PayView</a></li>
                 {% else %}
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                     <li><a href="{{ url_for('register') }}">Register</a></li>
+                    <li><a href="{{ url_for('PayView') }}">PayView</a></li>
                 {% endif %}
             </ul>
         </div>
