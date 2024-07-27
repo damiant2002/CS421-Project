@@ -3,8 +3,9 @@
   {% block styles %}
   <style>
     table {
-      width: 100%;
+      width: 95%;
       border-collapse: collapse;
+      margin: 2%;
     }
     table,
     th,
@@ -24,6 +25,18 @@
 
     .even {
       background-color: #ffffff; /* White for even rows */
+    }
+    .ytd {
+      text-align: right;
+    }
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+    }
+    hr{
+      padding: 5px;
     }
   </style>
 
@@ -58,32 +71,60 @@
     {% endfor %}
   </table>
   {% else %}
-  <table>
-    <tr>
-      <th>Username</th>
-      <th>Pay Rate</th>
-      <th>Pay Period</th>
-      <th>YTD</th>
-      <th>Hours</th>
-      <th>Gross</th>
-      <th>Tax</th>
-      <th>Overtime</th>
-      <th>Net</th>
-    </tr>
-    {% for pay in pays %}
-    <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
-      <td>{{ pay.username }}</td>
-      <td>{{ pay.payRate }}</td>
-      <td>{{ pay.payPeriod }}</td>
-      <td>{{ pay.YTD }}</td>
-      <td>{{ pay.hours }}</td>
-      <td>{{ pay.gross }}</td>
-      <td>{{ pay.tax }}</td>
-      <td>{{ pay.OT }}</td>
-      <td>{{ pay.net }}</td>
-    </tr>
-    {% endfor %}{% endif %}
-  </table>
-
+  <div class="header-container">
+    <h1>Hello, {{current_user.username}}</h1>
+    <h4 class="ytd">Current Hourly Rate: {{pays[0].payRate}}</h4>
+  </div>
+  <div>
+    <table>
+      <tr>
+        <th>Pay Rate</th>
+        <td>{{"%.2f" | format(pays[0].payRate)}}</td>
+        <th>Quarter</th>
+        <td>{{"%.2f" | format(quarter)}}</td>
+        <th>All-Time Pay</th>
+        <td>{{"%.2f" | format(ATamount)}}</td>
+        <th>Vacation</th>
+        <td>{{"%.2f" | format(vacationTime)}}</td>
+      </tr>
+      <tr>
+        <th>Total Base Pay</th>
+        <td>{{"%.2f" | format(netAmount)}}</td>
+        <th>Total OT Pay</th>
+        <td>{{"%.2f" | format(OTamount)}}</td>
+        <th>Year to Date Pay</th>
+        <td>{{ "%.2f" | format(pays[0].YTD) }}</td>
+        <th>Sick</th>
+        <td>{{"%.2f" | format(sickTime)}}</td>
+      </tr>
+    </table>
+    
+    <table>
+      <tr>
+        <th>Pay Rate😂</th>
+        <th>Pay Period</th>
+        <th>YTD</th>
+        <th>Hours</th>
+        <th>Gross</th>
+        <th>Tax</th>
+        <th>Overtime</th>
+        <th>Net</th>
+      </tr>
+      {% for pay in pays %}
+      <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
+        <td>{{ "%.2f" | format(pay.payRate) }}</td>
+        <td>{{ "%.2f" | format(pay.payPeriod) }}</td>
+        <td>{{ "%.2f" | format(pay.YTD) }}</td>
+        <td>{{ "%.2f" | format(pay.hours) }}</td>
+        <td>{{ "%.2f" | format(pay.gross) }}</td>
+        <td>{{ "%.2f" | format(pay.tax) }}</td>
+        <td>{{ "%.2f" | format(pay.OT) }}</td>
+        <td>{{ "%.2f" | format(pay.net) }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  
+  {% endif %}
   {% endblock %}
 </body>

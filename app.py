@@ -220,48 +220,55 @@ def PayView():
     else:    
         userName = current_user.username
         
-        paySlip = PayRoll.query.filter(PayRoll.username == userName).first()
+        paySlip = PayRoll.query.filter(PayRoll.username == userName).order_by(desc(PayRoll.payPeriod)).first()
         if (not paySlip):
             rate = round(random.uniform(20, 35), 2)
 
-            newEmployeePaySlip = PayRoll(userName, rate, 1.0, 0, 0, 0, 0, 0, 0)
-            paySlip = newEmployeePaySlip
+            paySlip = PayRoll(userName, rate, 1.0, 0, 0, 0, 0, 0, 0)
 
-            db.session.add(newEmployeePaySlip)
+            db.session.add(paySlip)
             db.session.commit()
-        
-        else:
-            paySlip = PayRoll.query.filter(PayRoll.username == userName).order_by(desc(PayRoll.payPeriod)).first()
 
     payRate = paySlip.payRate
+
+    payPeriod, quarter = calcPayPeriod(paySlip.payPeriod)
 
     workedHours = round(random.uniform(40, 55), 2)
     overTimeHours = workedHours - 40
 
     OTpay = (payRate * 1.5 * overTimeHours)
     OTpay = round(OTpay, 2)
-
     grossPay = ((workedHours * payRate) + OTpay)
     grossPay = round(grossPay, 2)
-
     taxPay = grossPay * 0.15
     taxPay = round(taxPay, 2)
-
     netPay = grossPay - taxPay
     netPay = round(netPay, 2)
 
-    YTDamount = paySlip.YTD + netPay
-    YTDamount = round(YTDamount, 2)
-
-    payPeriod = calcPayPeriod(paySlip.payPeriod)
+    if (payPeriod != int(payPeriod)):
+        YTDamount = paySlip.YTD + netPay
+        payRate *= 1.10
+    else:
+        YTDamount = netPay
 
     newPaySlip = PayRoll(userName, payRate, payPeriod, YTDamount, workedHours, grossPay, taxPay, OTpay, netPay)
     db.session.add(newPaySlip)
     db.session.commit()
 
-    allPaySlips = PayRoll.query.filter(PayRoll.username == userName).all()
+    allPaySlips = PayRoll.query.filter(PayRoll.username == userName).order_by(desc(PayRoll.payPeriod)).all()
+    ATamount = 0
+    netAmount = 0
+    OTamount = 0
+    for paySlip in allPaySlips:
+        ATamount += paySlip.gross
+        netAmount += paySlip.net
+        OTamount += paySlip.OT
 
-    return render_template("PayView.html", pays=allPaySlips)
+    sickTime = workedHours*0.09
+    vacationTime = workedHours*0.1
+
+    return render_template("PayView.html", pays=allPaySlips, quarter=quarter, ATamount=ATamount, sickTime=sickTime,
+                           vacationTime=vacationTime, netAmount=netAmount, OTamount=OTamount)
 
 @app.route("/users")
 def users():
@@ -273,13 +280,24 @@ def users():
     
 def calcPayPeriod(period: float):
     period = period + 0.01
-    period = round(period, 2)
-    test = math.ceil(period)
+    roundedPeriod = round(period, 2)
+    test = math.ceil(roundedPeriod)
 
-    if (test-period <= 0.48):
-        return test
+    quarter = 0
+    # Determine the quarter based on the payRate
+    if 1 <= period <= 3.9:
+        quarter = 1
+    elif 4 <= period <= 6.9:
+        quarter = 2
+    elif 7 <= period <= 9.9:
+        quarter = 3
     else:
-        return period
+        quarter = 4
+
+    if (test-roundedPeriod <= 0.47):
+        return test, quarter
+    else:
+        return roundedPeriod, quarter
 
 @app.context_processor
 def inject_functions():
