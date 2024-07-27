@@ -38,6 +38,7 @@ class User(db.Model, UserMixin):
     address = db.Column(db.String(200), nullable=True)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     is_admin = db.Column(db.Boolean)
+    schedules = db.relationship('Schedule', backref='user', lazy=True)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
@@ -113,6 +114,21 @@ class UpdateProfileForm(FlaskForm):
     picture = StringField("Profile Picture URL")
     submit = SubmitField("Update")
 
+class Schedule(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    shift_start = db.Column(db.Time, nullable=False)
+    shift_end = db.Column(db.Time, nullable=False)
+
+    def __repr__(self):
+        return f"Schedule('{self.date}', '{self.shift_start}', '{self.shift_end}')"    
+
+@app.route("/schedule")
+@login_required
+def schedule():
+    schedules = Schedule.query.filter_by(user_id=current_user.id).all()
+    return render_template("schedule.html", schedules=schedules)
 
 @app.route("/")
 @app.route("/home")
