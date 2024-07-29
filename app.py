@@ -245,11 +245,11 @@ def PayView():
     netPay = grossPay - taxPay
     netPay = round(netPay, 2)
 
-    if (payPeriod != int(payPeriod)):
-        YTDamount = paySlip.YTD + netPay
+    if (payPeriod == int(payPeriod)):
+        YTDamount = netPay
         payRate *= 1.10
     else:
-        YTDamount = netPay
+        YTDamount = paySlip.YTD + netPay
 
     newPaySlip = PayRoll(userName, payRate, payPeriod, YTDamount, workedHours, grossPay, taxPay, OTpay, netPay)
     db.session.add(newPaySlip)
@@ -285,11 +285,11 @@ def calcPayPeriod(period: float):
 
     quarter = 0
     # Determine the quarter based on the payRate
-    if 1 <= period <= 3.9:
+    if 1 <= roundedPeriod < 4:
         quarter = 1
-    elif 4 <= period <= 6.9:
+    elif 4 <= roundedPeriod < 7:
         quarter = 2
-    elif 7 <= period <= 9.9:
+    elif 7 <= roundedPeriod < 10:
         quarter = 3
     else:
         quarter = 4
