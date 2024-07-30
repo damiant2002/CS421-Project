@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}View Requests{% endblock %}
+
+{% block content %}
+    <div class="nav">
+        <a href="{{ url_for('time_requests') }}">Time Off</a>
+        <a href="{{ url_for('view_requests') }}" class="active">View Requests</a>
+    </div>
+
+    <div class="content">
+        <h1>Submitted Time Off Requests</h1>
+        <ul id="requestsList">
+            {% for request in requests %}
+                <li>
+                    {{ request.name }} - {{ request.date }} - {{ request.reason }}
+                    <button onclick="deleteRequest('{{ loop.index0 }}')">Delete</button>
+                </li>
+            
+            {% endfor %}
+        </ul>
+
+        <button onclick="location.href='/'">Back to Home</button>
+
+    </div>
+{% endblock %}

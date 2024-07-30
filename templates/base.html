@@ -1,151 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %} - Employee Management System</title>
-    {% block styles %}{% endblock %}
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-      }
-      .container {
-        width: 80%;
-        margin: auto;
-        overflow: hidden;
-      }
-      header {
-        background: #333;
-        color: #fff;
-        padding-top: 30px;
-        min-height: 70px;
-        border-bottom: #77d42a 3px solid;
-        position: relative;
-      }
-      header a {
-        color: #fff;
-        text-decoration: none;
-        text-transform: uppercase;
-        font-size: 16px;
-      }
-      header ul {
-        padding: 0;
-        list-style: none;
-      }
-      header li {
-        display: inline;
-        padding: 0 20px;
-      }
-      .admin-label {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background: #e74c3c;
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        display: none;
-      }
-      .admin-label.show {
-        display: block;
-      }
-      .content {
-        background: #fff;
-        padding: 20px;
-        margin-top: 20px;
-        border: #ddd 1px solid;
-      }
-      .tabs {
-        display: flex;
-        justify-content: space-between;
-        background: #333;
-        padding: 10px;
-      }
-      .tabs a {
-        color: #fff;
-        padding: 10px;
-        text-decoration: none;
-      }
-      .tabs a:hover {
-        background: #ddd;
-        color: #333;
-      }
-      .form-group {
-        margin-bottom: 15px;
-      }
-      .form-group label {
-        display: block;
-        margin-bottom: 5px;
-      }
-      .form-group input,
-      .form-group textarea {
-        width: 100%;
-        padding: 10px;
-        border: #ccc 1px solid;
-        border-radius: 5px;
-      }
-      .form-group button {
-        padding: 10px 20px;
-        background: #333;
-        color: #fff;
-        border: 0;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      .form-group button:hover {
-        background: #77d42a;
-      }
-      .flash-messages {
-        margin: 10px 0;
-      }
-      .flash-messages .message {
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-      }
-      .flash-messages .success {
-        background: #77d42a;
-        color: #fff;
-      }
-      .flash-messages .danger {
-        background: #e74c3c;
-        color: #fff;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #77d42a 3px solid;
+        }
+        header a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+        header ul {
+            padding: 0;
+            list-style: none;
+        }
+        header li {
+            display: inline;
+            padding: 0 20px 0 20px;
+        }
+        .content {
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border: #ddd 1px solid;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-between;
+            background: #333;
+            padding: 10px;
+        }
+        .tabs a {
+            color: #fff;
+            padding: 10px;
+            text-decoration: none;
+        }
+        .tabs a:hover {
+            background: #ddd;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: #ccc 1px solid;
+            border-radius: 5px;
+        }
+        .form-group button {
+            padding: 10px 20px;
+            background: #333;
+            color: #fff;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background: #77d42a;
+        }
+        .flash-messages {
+            margin: 10px 0;
+        }
+        .flash-messages .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .flash-messages .success {
+            background: #77d42a;
+            color: #fff;
+        }
+        .flash-messages .danger {
+            background: #e74c3c;
+            color: #fff;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <header>
-      <div class="container">
-        <h1>Employee Management System</h1>
-        <ul>
-          <li><a href="{{ url_for('home') }}">Home</a></li>
-          {% if current_user.is_authenticated %}
-          <li><a href="{{ url_for('profile') }}">Profile</a></li>
-          <li><a href="{{ url_for('logout') }}">Logout</a></li>
-          <li><a href="{{ url_for('PayView') }}">PayView</a></li>
-          <li><a href="{{ url_for('schedule') }}">Schedule</a></li>
-          {% if is_admin(current_user) %}
-          <li><a href="{{ url_for('users') }}">Employees</a></li>
-          <div class="admin-label show">Admin Account</div>
-          {% endif %} {% else %}
-          <li><a href="{{ url_for('login') }}">Login</a></li>
-          <li><a href="{{ url_for('register') }}">Register</a></li>
-          {% endif %}
-        </ul>
-      </div>
+        <div class="container">
+            <h1>Employee Management System</h1>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </header>
     <div class="container">
-      <div class="flash-messages">
-        {% with messages = get_flashed_messages(with_categories=true) %} {% if
-        messages %} {% for category, message in messages %}
-        <div class="message {{ category }}">{{ message }}</div>
-        {% endfor %} {% endif %} {% endwith %}
-      </div>
-      <div class="content">{% block content %}{% endblock %}</div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="tabs">
+            <a href="#">Admin</a>
+            <a href="#">Schedule</a>
+            <a href="{{ url_for('time_requests') }}">Time Requests</a>
+            <a href="{{ url_for('view_requests') }}">View Requests</a>
+            <!-- Add more tabs for future implementations -->
+        </div>
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
     </div>
-  </body>
+</body>
 </html>
