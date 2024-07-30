@@ -1,1 +1,15 @@
-placeholder
+Testing the code in codespaces:
+python3 -m venv venv
+
+source venv/bin/activate 
+windows: venv\Scripts\activate
+
+pip install Flask Flask-WTF Flask-Bcrypt Flask-Login Flask-SQLAlchemy Flask-Migrate email-validator werkzeug
+
+flask db init
+
+flask db migrate -m "Initial migration."
+
+flask db upgrade
+
+flask run --host=0.0.0.0

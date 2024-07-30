@@ -1,11 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schedule</title>
-</head>
-<body>
-    <!-- TODO: link schedule information -->
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}My Schedule{% endblock %}
+
+{% block styles %}
+<style>
+    table {
+        width: 95%;
+        border-collapse: collapse;
+        margin: 2%;
+    }
+    table, th, td {
+        border: 1px solid black;
+    }
+    th, td {
+        padding: 4px;
+    }
+    th {
+        background-color: lightgrey;
+    }
+    .odd {
+        background-color: #f2f2f2;
+    }
+    .even {
+        background-color: #ffffff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h1>Hello, {{ current_user.username }}</h1>
+</div>
+<div>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Shift Start</th>
+            <th>Shift End</th>
+        </tr>
+        {% for schedule in schedules %}
+        <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
+            <td>{{ schedule.date }}</td>
+            <td>{{ schedule.shift_start }}</td>
+            <td>{{ schedule.shift_end }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
