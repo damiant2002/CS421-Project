@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect, request
+from flask import Flask, render_template, url_for, flash, redirect, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, current_user, logout_user, login_required
@@ -128,6 +128,50 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('home'))
+
+@app.route('/time_requests', methods=['GET', 'POST'])
+def time_requests():
+    if request.method == 'POST':
+        name = request.form['employeeName']
+        date = request.form['timeOffDate']
+        reason = request.form['reason']
+
+        with open('requests.txt', 'a') as file:
+            file.write(f'{name},{date},{reason}\n')
+
+        return redirect(url_for('view_requests'))
+
+    return render_template('timeRequests.html')
+
+@app.route('/view_requests')
+def view_requests():
+    requests = []
+    with open('requests.txt', 'r') as file:
+        for index, line in enumerate(file):
+            name, date, reason = line.strip().split(',')
+            requests.append({'id': index, 'name': name, 'date': date, 'reason': reason})
+
+    return render_template('viewRequests.html', requests=requests)
+
+
+@app.route('/delete_request', methods=['POST'])
+def delete_request():
+    try:
+        request_id = int(request.form['id'])
+        with open('requests.txt', 'r') as file:
+            all_requests = file.readlines()
+        
+        if 0 <= request_id < len(all_requests):
+            all_requests.pop(request_id)
+        
+            with open('requests.txt', 'w') as file:
+                file.writelines(all_requests)
+        
+        return redirect(url_for('view_requests'))
+    
+    except Exception as e:
+        return str(e), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

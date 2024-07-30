@@ -109,6 +109,7 @@
                 {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('profile') }}">Profile</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    
                 {% else %}
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                     <li><a href="{{ url_for('register') }}">Register</a></li>
@@ -129,6 +130,8 @@
         <div class="tabs">
             <a href="#">Admin</a>
             <a href="#">Schedule</a>
+            <a href="{{ url_for('time_requests') }}">Time Requests</a>
+            <a href="{{ url_for('view_requests') }}">View Requests</a>
             <!-- Add more tabs for future implementations -->
         </div>
         <div class="content">
