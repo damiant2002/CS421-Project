@@ -130,6 +130,7 @@
           <li><a href="{{ url_for('schedule') }}">Schedule</a></li>
           {% if is_admin(current_user) %}
           <li><a href="{{ url_for('users') }}">Employees</a></li>
+          <li><a href="{{ url_for('schedules') }}">All Schedules</a></li>
           <div class="admin-label show">Admin Account</div>
           {% endif %} {% else %}
           <li><a href="{{ url_for('login') }}">Login</a></li>
