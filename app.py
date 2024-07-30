@@ -301,11 +301,11 @@ def calcPayPeriod(period: float):
 
     quarter = 0
     # Determine the quarter based on the payRate
-    if 1 <= roundedPeriod < 4:
+    if (1 <= roundedPeriod < 4):
         quarter = 1
-    elif 4 <= roundedPeriod < 7:
+    elif (4 <= roundedPeriod < 7):
         quarter = 2
-    elif 7 <= roundedPeriod < 10:
+    elif (7 <= roundedPeriod < 10):
         quarter = 3
     else:
         quarter = 4
