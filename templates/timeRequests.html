@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Time Requests{% endblock %}
+
+{% block content %}
+    <h1>Employee Time Off Portal</h1>
+
+    <form id="timeOffForm" method="post" action="{{ url_for('time_requests') }}">
+        <label for="employeeName">Name:</label>
+        <input type="text" id="employeeName" name="employeeName" required>
+
+        <label for="timeOffDate">Date:</label>
+        <input type="date" id="timeOffDate" name="timeOffDate" required>
+
+        <label for="reason">Reason:</label>
+        <textarea id="reason" name="reason" rows="4" required></textarea>
+
+        <button type="submit">Submit Request</button>
+    </form>
+{% endblock %}
