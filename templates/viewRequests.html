@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}View Requests{% endblock %}
+
+{% block content %}
+    <div class="nav">
+        <!-- <a href="{{ url_for('time_requests') }}">Time Off</a> -->
+        <!-- <a href="{{ url_for('view_requests') }}" class="active">View Requests</a> -->
+    </div>
+
+    <div class="content">
+        <h1>Submitted Time Off Requests</h1>
+        <ul id="requestsList">
+            {% for request in requests %}
+                <li id="request-{{ request.id }}">
+                    {{ request.name }} - {{ request.date }} - {{ request.reason }}
+                    {% if current_user.is_admin %}
+                        <button onclick="acceptRequest('{{ request.id }}')">Accept</button>
+                        <button onclick="denyRequest('{{ request.id }}')">Deny</button>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <button onclick="location.href='/'">Back to Home</button>
+    </div>
+
+{% endblock %}

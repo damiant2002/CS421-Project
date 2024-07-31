@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect, request
+from flask import Flask, render_template, url_for, flash, redirect, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, asc
 from flask_bcrypt import Bcrypt
@@ -314,11 +314,11 @@ def PayView():
     netPay = grossPay - taxPay
     netPay = round(netPay, 2)
 
-    if (payPeriod != int(payPeriod)):
-        YTDamount = paySlip.YTD + netPay
+    if (payPeriod == int(payPeriod)):
+        YTDamount = netPay
         payRate *= 1.10
     else:
-        YTDamount = netPay
+        YTDamount = paySlip.YTD + netPay
 
     newPaySlip = PayRoll(userName, payRate, payPeriod, YTDamount, workedHours, grossPay, taxPay, OTpay, netPay)
     db.session.add(newPaySlip)
@@ -354,11 +354,11 @@ def calcPayPeriod(period: float):
 
     quarter = 0
     # Determine the quarter based on the payRate
-    if 1 <= period <= 3.9:
+    if (1 <= roundedPeriod < 4):
         quarter = 1
-    elif 4 <= period <= 6.9:
+    elif (4 <= roundedPeriod < 7):
         quarter = 2
-    elif 7 <= period <= 9.9:
+    elif (7 <= roundedPeriod < 10):
         quarter = 3
     else:
         quarter = 4
@@ -379,6 +379,56 @@ def is_admin(user):
 
 
 
+
+
+@app.route('/time_requests', methods=['GET', 'POST'])
+def time_requests():
+    if request.method == 'POST':
+        name = request.form['employeeName']
+        date = request.form['timeOffDate']
+        reason = request.form['reason']
+
+        with open('requests.txt', 'a') as file:
+            file.write(f'{name},{date},{reason}\n')
+
+        return redirect(url_for('view_requests'))
+
+    return render_template('timeRequests.html')
+
+@app.route('/view_requests')
+@login_required
+def view_requests():
+    requests = []
+    with open('requests.txt', 'r') as file:
+        for index, line in enumerate(file):
+            name, date, reason = line.strip().split(',')
+            requests.append({'id': index, 'name': name, 'date': date, 'reason': reason})
+    return render_template('viewRequests.html', requests=requests, is_admin=current_user.is_admin)
+
+@app.route('/update_request/<int:request_id>', methods=['POST'])
+@login_required
+def update_request(request_id):
+    data = request.get_json()
+    status = data.get('status')
+    return jsonify({'success': True}), 200
+
+# @app.route('/delete_request', methods=['POST'])
+# def delete_request():
+#     try:
+#         request_id = int(request.form['id'])
+#         with open('requests.txt', 'r') as file:
+#             all_requests = file.readlines()
+        
+#         if 0 <= request_id < len(all_requests):
+#             all_requests.pop(request_id)
+        
+#             with open('requests.txt', 'w') as file:
+#                 file.writelines(all_requests)
+        
+#         return redirect(url_for('view_requests'))
+    
+#     except Exception as e:
+#         return str(e), 500
 
 
 if __name__ == '__main__':
