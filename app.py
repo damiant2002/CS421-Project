@@ -295,7 +295,7 @@ def users():
     
     
 def calcPayPeriod(period: float):
-    period = period + 0.01
+    period = period + 1
     roundedPeriod = round(period, 2)
     test = math.ceil(roundedPeriod)
 

@@ -7,13 +7,10 @@
       border-collapse: collapse;
       margin: 2%;
     }
-    table,
-    th,
-    td {
+    table, th, td {
       border: 1px solid black;
     }
-    th,
-    td {
+    th, td {
       padding: 4px;
     }
     th {
@@ -43,7 +40,9 @@
   {% endblock %}
 </head>
 <body>
-  {% block content %} {% if is_admin(current_user) %}
+  {% block content %}
+  {% if is_admin(current_user) %}
+  
   <table>
     <tr>
       <th>Username</th>
@@ -75,55 +74,54 @@
     <h1>Hello, {{current_user.username}}</h1>
     <h4 class="ytd">Current Hourly Rate: {{"%.2f" | format(pays[0].payRate)}}</h4>
   </div>
-  <div>
-    <table>
-      <tr>
-        <th>Pay Rate</th>
-        <td>{{"%.2f" | format(pays[0].payRate)}}</td>
-        <th>Quarter</th>
-        <td>{{"%.2f" | format(quarter)}}</td>
-        <th>All-Time Pay</th>
-        <td>{{"%.2f" | format(ATamount)}}</td>
-        <th>Vacation</th>
-        <td>{{"%.2f" | format(vacationTime)}}</td>
-      </tr>
-      <tr>
-        <th>Total Base Pay</th>
-        <td>{{"%.2f" | format(netAmount)}}</td>
-        <th>Total OT Pay</th>
-        <td>{{"%.2f" | format(OTamount)}}</td>
-        <th>Year to Date Pay</th>
-        <td>{{ "%.2f" | format(pays[0].YTD) }}</td>
-        <th>Sick</th>
-        <td>{{"%.2f" | format(sickTime)}}</td>
-      </tr>
-    </table>
-    
-    <table>
-      <tr>
-        <th>Pay Rate😂</th>
-        <th>Pay Period</th>
-        <th>YTD</th>
-        <th>Hours</th>
-        <th>Gross</th>
-        <th>Tax</th>
-        <th>Overtime</th>
-        <th>Net</th>
-      </tr>
-      {% for pay in pays %}
-      <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
-        <td>{{ "%.2f" | format(pay.payRate) }}</td>
-        <td>{{ "%.2f" | format(pay.payPeriod) }}</td>
-        <td>{{ "%.2f" | format(pay.YTD) }}</td>
-        <td>{{ "%.2f" | format(pay.hours) }}</td>
-        <td>{{ "%.2f" | format(pay.gross) }}</td>
-        <td>{{ "%.2f" | format(pay.tax) }}</td>
-        <td>{{ "%.2f" | format(pay.OT) }}</td>
-        <td>{{ "%.2f" | format(pay.net) }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-  </div>
+
+  <table>
+    <tr>
+      <th>Pay Rate</th>
+      <td>{{"%.2f" | format(pays[0].payRate)}}</td>
+      <th>Quarter</th>
+      <td>{{"%.2f" | format(quarter)}}</td>
+      <th>All-Time Pay</th>
+      <td>{{"%.2f" | format(ATamount)}}</td>
+      <th>Vacation</th>
+      <td>{{"%.2f" | format(vacationTime)}}</td>
+    </tr>
+    <tr>
+      <th>Total Base Pay</th>
+      <td>{{"%.2f" | format(netAmount)}}</td>
+      <th>Total OT Pay</th>
+      <td>{{"%.2f" | format(OTamount)}}</td>
+      <th>Year to Date Pay</th>
+      <td>{{ "%.2f" | format(pays[0].YTD) }}</td>
+      <th>Sick</th>
+      <td>{{"%.2f" | format(sickTime)}}</td>
+    </tr>
+  </table>
+  
+  <table>
+    <tr>
+      <th>Pay Rate</th>
+      <th>Pay Period</th>
+      <th>YTD</th>
+      <th>Hours</th>
+      <th>Gross</th>
+      <th>Tax</th>
+      <th>Overtime</th>
+      <th>Net</th>
+    </tr>
+    {% for pay in pays %}
+    <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
+      <td>{{ "%.2f" | format(pay.payRate) }}</td>
+      <td>{{ "%.2f" | format(pay.payPeriod) }}</td>
+      <td>{{ "%.2f" | format(pay.YTD) }}</td>
+      <td>{{ "%.2f" | format(pay.hours) }}</td>
+      <td>{{ "%.2f" | format(pay.gross) }}</td>
+      <td>{{ "%.2f" | format(pay.tax) }}</td>
+      <td>{{ "%.2f" | format(pay.OT) }}</td>
+      <td>{{ "%.2f" | format(pay.net) }}</td>
+    </tr>
+    {% endfor %}
+  </table>
   
   {% endif %}
   {% endblock %}
