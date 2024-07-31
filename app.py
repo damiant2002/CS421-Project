@@ -343,6 +343,7 @@ def time_requests():
     return render_template('timeRequests.html')
 
 @app.route('/view_requests')
+@login_required
 def view_requests():
     requests = []
     with open('requests.txt', 'r') as file:
@@ -350,26 +351,26 @@ def view_requests():
             name, date, reason = line.strip().split(',')
             requests.append({'id': index, 'name': name, 'date': date, 'reason': reason})
 
-    return render_template('viewRequests.html', requests=requests)
+    return render_template('viewRequests.html', requests=requests, is_admin=current_user.is_admin)
 
 
-@app.route('/delete_request', methods=['POST'])
-def delete_request():
-    try:
-        request_id = int(request.form['id'])
-        with open('requests.txt', 'r') as file:
-            all_requests = file.readlines()
+# @app.route('/delete_request', methods=['POST'])
+# def delete_request():
+#     try:
+#         request_id = int(request.form['id'])
+#         with open('requests.txt', 'r') as file:
+#             all_requests = file.readlines()
         
-        if 0 <= request_id < len(all_requests):
-            all_requests.pop(request_id)
+#         if 0 <= request_id < len(all_requests):
+#             all_requests.pop(request_id)
         
-            with open('requests.txt', 'w') as file:
-                file.writelines(all_requests)
+#             with open('requests.txt', 'w') as file:
+#                 file.writelines(all_requests)
         
-        return redirect(url_for('view_requests'))
+#         return redirect(url_for('view_requests'))
     
-    except Exception as e:
-        return str(e), 500
+#     except Exception as e:
+#         return str(e), 500
 
 
 if __name__ == '__main__':
