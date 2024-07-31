@@ -14,13 +14,14 @@
             {% for request in requests %}
                 <li>
                     {{ request.name }} - {{ request.date }} - {{ request.reason }}
-                    <button onclick="deleteRequest('{{ loop.index0 }}')">Delete</button>
+                    {% if is_admin %}
+                        <button type="button">Accept</button>
+                        <button type="button">Deny</button>
+                    {% endif %}
                 </li>
-            
             {% endfor %}
         </ul>
 
         <button onclick="location.href='/'">Back to Home</button>
-
     </div>
 {% endblock %}
