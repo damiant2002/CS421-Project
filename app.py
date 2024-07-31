@@ -350,9 +350,14 @@ def view_requests():
         for index, line in enumerate(file):
             name, date, reason = line.strip().split(',')
             requests.append({'id': index, 'name': name, 'date': date, 'reason': reason})
-
     return render_template('viewRequests.html', requests=requests, is_admin=current_user.is_admin)
 
+@app.route('/update_request/<int:request_id>', methods=['POST'])
+@login_required
+def update_request(request_id):
+    data = request.get_json()
+    status = data.get('status')
+    return jsonify({'success': True}), 200
 
 # @app.route('/delete_request', methods=['POST'])
 # def delete_request():
