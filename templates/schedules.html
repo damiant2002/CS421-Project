@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}All Schedules{% endblock %}
+
+{% block styles %}
+<style>
+    table {
+        width: 95%;
+        border-collapse: collapse;
+        margin: 2%;
+    }
+    table, th, td {
+        border: 1px solid black;
+    }
+    th, td {
+        padding: 4px;
+    }
+    th {
+        background-color: lightgrey;
+    }
+    .odd {
+        background-color: #f2f2f2; /* Light grey for odd rows */
+    }
+    .even {
+        background-color: #ffffff; /* White for even rows */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h1>All Schedules</h1>
+</div>
+<div>
+    <a href="{{ url_for('addShift') }}">Add Shift</a>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Date</th>
+            <th>Shift Start</th>
+            <th>Shift End</th>
+            <th>Action</th>
+        </tr>
+        {% for schedule, user in all_schedules %}
+        <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
+            <td>{{ user.username }}</td>
+            <td>{{ schedule.date }}</td>
+            <td>{{ schedule.shift_start }}</td>
+            <td>{{ schedule.shift_end }}</td>
+            <td><a href="{{ url_for('delete_shift', schedule_id=schedule.id) }}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

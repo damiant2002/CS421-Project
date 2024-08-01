@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Add Shift{% endblock %}
+
+{% block styles %}
+<style>
+    form {
+        width: 60%;
+        margin: 2%;
+    }
+    form div {
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header-container">
+    <h1>Add Shift</h1>
+</div>
+<div>
+    <form method="POST" action="{{ url_for('addShift') }}">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.user_id.label }}<br>
+            {{ form.user_id }}
+        </div>
+        <div>
+            {{ form.date.label }}<br>
+            {{ form.date }}
+        </div>
+        <div>
+            {{ form.shift_start.label }}<br>
+            {{ form.shift_start }}
+        </div>
+        <div>
+            {{ form.shift_end.label }}<br>
+            {{ form.shift_end }}
+        </div>
+        <div>
+            {{ form.submit }}
+        </div>
+    </form>
+</div>
+{% endblock %}
