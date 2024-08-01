@@ -300,9 +300,9 @@ def PayView():
 
     payRate = paySlip.payRate
 
-    payPeriod, quarter = calcPayPeriod(paySlip.payPeriod)
+    payPeriod, quarter, payPeriodRange= calcPayPeriod(paySlip.payPeriod)
 
-    workedHours = round(random.uniform(40, 55), 2)
+    workedHours = round(random.uniform(40, 55) * 2, 2)
     overTimeHours = workedHours - 40
 
     OTpay = (payRate * 1.5 * overTimeHours)
@@ -314,29 +314,32 @@ def PayView():
     netPay = grossPay - taxPay
     netPay = round(netPay, 2)
 
-    if (payPeriod == int(payPeriod)):
-        YTDamount = netPay
-        payRate *= 1.10
+    YTDamount = 0
+    if (payPeriod == payPeriodRange):
+        YTDamount = grossPay
+        payRate += 0.25
     else:
-        YTDamount = paySlip.YTD + netPay
+        YTDamount = paySlip.YTD + grossPay
 
     newPaySlip = PayRoll(userName, payRate, payPeriod, YTDamount, workedHours, grossPay, taxPay, OTpay, netPay)
     db.session.add(newPaySlip)
     db.session.commit()
 
-    allPaySlips = PayRoll.query.filter(PayRoll.username == userName).order_by(desc(PayRoll.payPeriod)).all()
-    ATamount = 0
+    allPaySlips = PayRoll.query.filter(PayRoll.username == userName).all()
+    ATamount = sum(payslip.gross for payslip in allPaySlips)
+
+    yearsPaySlips = PayRoll.query.filter(PayRoll.username == userName, PayRoll.payPeriod >= payPeriodRange, PayRoll.payPeriod < payPeriodRange+1).order_by(desc(PayRoll.payPeriod)).all()
+    
     netAmount = 0
     OTamount = 0
-    for paySlip in allPaySlips:
-        ATamount += paySlip.gross
+    for paySlip in yearsPaySlips:
         netAmount += paySlip.net
         OTamount += paySlip.OT
 
     sickTime = workedHours*0.09
     vacationTime = workedHours*0.1
 
-    return render_template("PayView.html", pays=allPaySlips, quarter=quarter, ATamount=ATamount, sickTime=sickTime,
+    return render_template("PayView.html", pays=yearsPaySlips, quarter=quarter, ATamount=ATamount, sickTime=sickTime,
                            vacationTime=vacationTime, netAmount=netAmount, OTamount=OTamount)
 
 @app.route("/users")
@@ -348,26 +351,25 @@ def users():
     
     
 def calcPayPeriod(period: float):
-    period = period + 1
-    roundedPeriod = round(period, 2)
-    test = math.ceil(roundedPeriod)
-
+    period = round(period+.02, 2)
+    week = (period - int(period))*100 # 0-52
+    
     quarter = 0
     # Determine the quarter based on the payRate
-    if (1 <= roundedPeriod < 4):
+    if (0 <= week < 13):
         quarter = 1
-    elif (4 <= roundedPeriod < 7):
+    elif (13 <= week < 26):
         quarter = 2
-    elif (7 <= roundedPeriod < 10):
+    elif (26 <= week < 39):
         quarter = 3
-    else:
+    elif (39 <= week < 53):
         quarter = 4
-
-    if (test-roundedPeriod <= 0.47):
-        return test, quarter
     else:
-        return roundedPeriod, quarter
-
+        quarter = 1
+        period = int(period)+1
+    
+    return period, quarter, int(period)
+    
 @app.context_processor
 def inject_functions():
     return dict(is_admin=is_admin)

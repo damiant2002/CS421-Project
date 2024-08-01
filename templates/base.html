@@ -99,10 +99,10 @@
             color: #fff;
         }
     </style>
+    {% block styles %} {% endblock %}
 </head>
 <body>
     <header>
-<<<<<<< HEAD
       <div class="container">
         <h1>Employee Management System</h1>
         <ul>
@@ -122,22 +122,6 @@
           {% endif %}
         </ul>
       </div>
-=======
-        <div class="container">
-            <h1>Employee Management System</h1>
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('profile') }}">Profile</a></li>
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                                     
-                {% else %}
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
-                    <li><a href="{{ url_for('register') }}">Register</a></li>
-                {% endif %}
-            </ul>
-        </div>
->>>>>>> 88f76043edbae7260894591f1f8b188908768441
     </header>
     <div class="container">
         <div class="flash-messages">
