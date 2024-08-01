@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %} - Employee Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,6 +24,7 @@
             padding-top: 30px;
             min-height: 70px;
             border-bottom: #77d42a 3px solid;
+            position: relative;
         }
         header a {
             color: #fff;
@@ -36,6 +39,16 @@
         header li {
             display: inline;
             padding: 0 20px 0 20px;
+        }
+        .admin-label {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #e74c3c;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
         }
         .content {
             background: #fff;
@@ -112,11 +125,12 @@
           <li><a href="{{ url_for('logout') }}">Logout</a></li>
           <li><a href="{{ url_for('PayView') }}">PayView</a></li>
           <li><a href="{{ url_for('schedule') }}">Schedule</a></li>
-          {% if is_admin(current_user) %}
+          {% if current_user.is_admin %}
           <li><a href="{{ url_for('users') }}">Employees</a></li>
           <li><a href="{{ url_for('schedules') }}">All Schedules</a></li>
-          <div class="admin-label show">Admin Account</div>
-          {% endif %} {% else %}
+          <div class="admin-label">Admin Account</div>
+          {% endif %}
+          {% else %}
           <li><a href="{{ url_for('login') }}">Login</a></li>
           <li><a href="{{ url_for('register') }}">Register</a></li>
           {% endif %}
@@ -141,12 +155,11 @@
             {% endif %}
             <a href="{{ url_for('view_requests') }}">View Requests</a>
 
-            <!-- Add more tabs for future implementations -->
+         
         </div>
         <div class="content">
             {% block content %}{% endblock %}
         </div>
     </div>
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>

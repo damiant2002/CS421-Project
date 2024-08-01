@@ -13,10 +13,10 @@
         <ul id="requestsList">
             {% for request in requests %}
                 <li id="request-{{ request.id }}">
-                    {{ request.name }} - {{ request.date }} - {{ request.reason }}
+                    {{ request.name }} - {{ request.date }} - {{ request.reason }} - Status: {{ request.status }}
                     {% if current_user.is_admin %}
-                        <button onclick="acceptRequest('{{ request.id }}')">Accept</button>
-                        <button onclick="denyRequest('{{ request.id }}')">Deny</button>
+                        <button onclick="updateRequest('{{ request.id }}', 'accepted')">Accept</button>
+                        <button onclick="updateRequest('{{ request.id }}', 'denied')">Deny</button>
                     {% endif %}
                 </li>
             {% endfor %}
@@ -25,4 +25,22 @@
         <button onclick="location.href='/'">Back to Home</button>
     </div>
 
+    <script>
+        function updateRequest(requestId, status) {
+            fetch(`/update_request/${requestId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: status })
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('Error updating request');
+                }
+            });
+        }
+    </script>
 {% endblock %}

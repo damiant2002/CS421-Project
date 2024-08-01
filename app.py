@@ -37,7 +37,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     address = db.Column(db.String(200), nullable=True)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    is_admin = db.Column(db.Boolean)
+    is_admin = db.Column(db.Boolean, default=False)
     schedules = db.relationship('Schedule', backref='user', lazy=True)
 
     def __repr__(self):
@@ -196,36 +196,28 @@ def register():
 
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode(
-            "utf-8"
-        )
+        try:
+            hashed_password = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
+            is_admin_flag = 'register_as_admin' in request.form  # Check if the admin registration checkbox is checked
+            user = User(
+                username=form.username.data,
+                email=form.email.data,
+                password=hashed_password,
+                is_admin=is_admin_flag,
+            )
 
-        if "register_as_admin" in request.form:
-            user = User(
-                username=form.username.data,
-                email=form.email.data,
-                password=hashed_password,
-                is_admin=True,
-            )
             db.session.add(user)
             db.session.commit()
-            login_user(user)
-            flash("Admin account has been created!", "success")
-            return redirect(url_for("thank_you"))
-        else:
-            user = User(
-                username=form.username.data,
-                email=form.email.data,
-                password=hashed_password,
-                is_admin=False
-            )
-            db.session.add(user)
-            db.session.commit()
-            login_user(user)
+            login_user(user)  # Log the user in immediately after registration
             flash("Your account has been created!", "success")
             return redirect(url_for("thank_you"))
+        except Exception as e:
+            flash(f"An error occurred: {e}", "danger")
+            db.session.rollback()  # Rollback the transaction if there's an error
 
     return render_template("register.html", title="Register", form=form)
+
+
 
 
 @app.route("/thank_you")
@@ -380,38 +372,65 @@ def is_admin(user):
     return False
 
 
-
-
-
 @app.route('/time_requests', methods=['GET', 'POST'])
 def time_requests():
     if request.method == 'POST':
-        name = request.form['employeeName']
-        date = request.form['timeOffDate']
-        reason = request.form['reason']
+        try:
+            name = request.form['employeeName']
+            date = request.form['timeOffDate']
+            reason = request.form['reason']
+            status = 'pending'
 
-        with open('requests.txt', 'a') as file:
-            file.write(f'{name},{date},{reason}\n')
+            with open('requests.txt', 'a') as file:
+                file.write(f'{name},{date},{reason},{status}\n')
 
-        return redirect(url_for('view_requests'))
+            flash('Time off request submitted successfully!', 'success')
+            return redirect(url_for('view_requests'))
+        except Exception as e:
+            app.logger.error(f"Error occurred: {e}")
+            flash(f"An error occurred: {e}", 'danger')
 
     return render_template('timeRequests.html')
+
 
 @app.route('/view_requests')
 @login_required
 def view_requests():
     requests = []
-    with open('requests.txt', 'r') as file:
-        for index, line in enumerate(file):
-            name, date, reason = line.strip().split(',')
-            requests.append({'id': index, 'name': name, 'date': date, 'reason': reason})
-    return render_template('viewRequests.html', requests=requests, is_admin=current_user.is_admin)
+    try:
+        with open('requests.txt', 'r') as file:
+            for index, line in enumerate(file):
+                parts = line.strip().split(',')
+                if len(parts) == 4:
+                    name, date, reason, status = parts
+                    requests.append({'id': index, 'name': name, 'date': date, 'reason': reason, 'status': status})
+    except FileNotFoundError:
+        flash('No time off requests found.', 'info')
+    except Exception as e:
+        app.logger.error(f"Error occurred: {e}")
+        flash(f"An error occurred: {e}", 'danger')
+
+    return render_template('viewRequests.html', requests=requests)
+
+
 
 @app.route('/update_request/<int:request_id>', methods=['POST'])
 @login_required
 def update_request(request_id):
     data = request.get_json()
-    status = data.get('status')
+    new_status = data.get('status')  # Changed variable name to avoid conflict
+
+    with open('requests.txt', 'r') as file:
+        lines = file.readlines()
+
+    with open('requests.txt', 'w') as file:
+        for index, line in enumerate(lines):
+            if index == request_id:
+                name, date, reason, _ = line.strip().split(',')
+                file.write(f'{name},{date},{reason},{new_status}\n')
+            else:
+                file.write(line)
+    
     return jsonify({'success': True}), 200
 
 # @app.route('/delete_request', methods=['POST'])
