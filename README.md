@@ -31,5 +31,6 @@ The program will then open in your default browser.
 [SQLAlchemy documentation](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#check-the-sqlalchemy-documentation) <br>
 [HTML Documentaion](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#check-the-sqlalchemy-documentation) <br>
 [batch file](https://stackoverflow.com/questions/44363472/simple-windows-batch-to-move-folders) <br>
-[Profile Picture Upload](https://medium.com/@brodiea19/flask-sqlalchemy-how-to-upload-photos-and-render-them-to-your-webpage-84aa549ab39e) <br>
+[Profile Picture Upload Documentation](https://medium.com/@brodiea19/flask-sqlalchemy-how-to-upload-photos-and-render-them-to-your-webpage-84aa549ab39e) <br>
 [Edit Profile Documentation](https://www.trccompsci.online/mediawiki/index.php/Register_and_Edit_profile_in_a_Flask_App) <br>
+[Profile Editing DB Save Documentation](https://stackoverflow.com/questions/28744772/best-practice-to-store-profile-data-in-mysql) <br>
