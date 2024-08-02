@@ -1,17 +1,26 @@
-Testing the code in codespaces:
-python3 -m venv venv
+# Employee Management System
+Created by Daniel Eleam, Jax Pendergrass, Alex Pruitt, Blaine Seaman, Damian Tucker, and Sadie Young
+## Purpose
+The Employee Management System is a web application built with Flask, designed to manage employee information, schedules, and payroll. It allows administrators to manage employee records, add or delete shifts, and generate pay stubs. Employees can view their schedules and pay slips, and submit time-off requests.
 
-source venv/bin/activate 
-windows: venv\Scripts\activate
+## Requirements
+Latest version of Python.
 
-pip install Flask Flask-WTF Flask-Bcrypt Flask-Login Flask-SQLAlchemy Flask-Migrate email-validator werkzeug
+## Execution
+To run the application, clone the repository into your chosen directory using:
+`git clone https://github.com/damiant2002/CS421-Project.git`
+then access the directory with:
+`cd CS421-Project`
 
-flask db init
+### For Windows
+In powershell, run: 
+`./run_flask.bat`
+or
+`run_flask.bat`
+in the command prompt.
 
-flask db migrate -m "Initial migration."
+### For MAC/Linux
+Run `./run_flask.sh` or `run_flask.sh` in the terminal.
 
-flask db upgrade
+The program will then open in your default browser.
 
-start flask run --host=0.0.0.0
-
-start http://0.0.0.0:5000
