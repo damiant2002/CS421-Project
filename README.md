@@ -15,21 +15,21 @@ To run the application, clone the repository into your chosen directory using:<b
 `git clone https://github.com/damiant2002/CS421-Project.git`<br><br>
 then access the directory with:<br><br>
 `cd CS421-Project`<br><br>
-Proceed to the instructions for your OS below.
+Proceed to the instructions for your OS below.<br><br>
 
 ### For Windows
 In powershell, run: <br><br>
 `./run_flask.bat`<br><br>
 or<br><br>
 `run_flask.bat`<br><br>
-in the command prompt.
+in the command prompt. <br><br>
 
 ### For MAC/Linux
 Run `chmod +x run_flask.sh` to make sure user has permission to execute. (We had to do this in CodeSpaces)
 
 Run `./run_flask.sh` or `run_flask.sh` in the terminal.
 
-The program will then open in your default browser.
+The program will then open in your default browser.<br><br>
 
 
 ## References
