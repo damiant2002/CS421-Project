@@ -20,6 +20,8 @@ or
 in the command prompt.
 
 ### For MAC/Linux
+Run chmod +x run_flask.sh to make sure user has permission to execute. (We had to do this in CodeSpaces)
+
 Run `./run_flask.sh` or `run_flask.sh` in the terminal.
 
 The program will then open in your default browser.
@@ -29,4 +31,4 @@ The program will then open in your default browser.
 [SQLAlchemy documentation](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#check-the-sqlalchemy-documentation) <br>
 [HTML Documentaion](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#check-the-sqlalchemy-documentation) <br>
 [batch file](https://stackoverflow.com/questions/44363472/simple-windows-batch-to-move-folders) <br>
-[Profile Picture Upload] https://medium.com/@brodiea19/flask-sqlalchemy-how-to-upload-photos-and-render-them-to-your-webpage-84aa549ab39e <br>
+[Profile Picture Upload]https://medium.com/@brodiea19/flask-sqlalchemy-how-to-upload-photos-and-render-them-to-your-webpage-84aa549ab39e <br>
