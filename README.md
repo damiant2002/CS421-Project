@@ -24,3 +24,7 @@ Run `./run_flask.sh` or `run_flask.sh` in the terminal.
 
 The program will then open in your default browser.
 
+## References
+
+[SQLAlchemy documentation](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#check-the-sqlalchemy-documentation)
+[HTML Documentaion](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#check-the-sqlalchemy-documentation)
