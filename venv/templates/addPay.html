@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% block title %}Add Pay Record{% endblock %} {% block
+content %}
+<h2>Add Pay Record</h2>
+<form method="POST">
+  <label for="username">Username:</label>
+  <input type="text" name="username" required /><br />
+
+  <label for="payRate">Pay Rate:</label>
+  <input type="number" name="payRate" required /><br />
+
+  <label for="hours">Hours:</label>
+  <input type="number" name="hours" required /><br />
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">Submit Pay</button>
+  </div>
+</form>
+{% endblock %}

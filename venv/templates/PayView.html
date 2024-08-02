@@ -1,0 +1,119 @@
+{% extends "base.html" %} {% block title %}PayView{% endblock %}
+<head>
+  {% block styles %}
+  <style>
+    table {
+      width: 95%;
+      border-collapse: collapse;
+      margin: 2%;
+    }
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+    th,
+    td {
+      padding: 4px;
+    }
+    th {
+      background-color: lightgrey;
+    }
+    .odd {
+      background-color: #f2f2f2; /* Light grey for odd rows */
+    }
+
+    .even {
+      background-color: #ffffff; /* White for even rows */
+    }
+    .ytd {
+      text-align: right;
+    }
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+    }
+    hr {
+      padding: 5px;
+    }
+  </style>
+
+  {% endblock %}
+</head>
+<body>
+  {% block content %} {% if is_admin(current_user) %}
+  <button type="button" class="btn">
+    <a href="{{ url_for('addPay') }}" style="color: white">Add Pay Record</a>
+  </button>
+
+  <table>
+    <tr>
+      <th>Username</th>
+      <th>Pay Rate</th>
+      <th>Hours</th>
+      <th>Gross</th>
+      <th>Tax</th>
+      <th>Overtime</th>
+      <th>Net</th>
+    </tr>
+    {% for pay in pays %}
+    <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
+      <td>{{ pay.username }}</td>
+      <td>{{ pay.payRate }}</td>
+      <td>{{ pay.hours }}</td>
+      <td>{{ pay.gross }}</td>
+      <td>{{ pay.tax }}</td>
+      <td>{{ pay.OT }}</td>
+      <td>{{ pay.net }}</td>
+      <td>
+        <a href="{{ url_for('delete_pay', pay_id=pay._id) }}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <div class="header-container">
+    <h1>Hello, {{current_user.username}}</h1>
+    <h4 class="ytd">
+      Current Hourly Rate: {{"%.2f" | format(pays[0].payRate)}}
+    </h4>
+  </div>
+
+  <table>
+    <tr>
+      <th>Pay Rate</th>
+      <td>{{"%.2f" | format(pays[0].payRate)}}</td>
+    </tr>
+    <tr>
+      <th>Total Base Pay</th>
+      <td>{{"%.2f" | format(netAmount)}}</td>
+      <th>Total OT Pay</th>
+      <td>{{"%.2f" | format(OTamount)}}</td>
+    </tr>
+  </table>
+
+  <table>
+    <tr>
+      <th>Pay Rate</th>
+      <th>Hours</th>
+      <th>Gross</th>
+      <th>Tax</th>
+      <th>Overtime</th>
+      <th>Net</th>
+    </tr>
+    {% for pay in pays %}
+    <tr class="{{ 'even' if loop.index % 2 == 0 else 'odd' }}">
+      <td>{{ "%.2f" | format(pay.payRate) }}</td>
+      <td>{{ "%.2f" | format(pay.hours) }}</td>
+      <td>{{ "%.2f" | format(pay.gross) }}</td>
+      <td>{{ "%.2f" | format(pay.tax) }}</td>
+      <td>{{ "%.2f" | format(pay.OT) }}</td>
+      <td>{{ "%.2f" | format(pay.net) }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  {% endif %} {% endblock %}
+</body>
