@@ -26,6 +26,6 @@ The program will then open in your default browser.
 
 ## References
 
-[SQLAlchemy documentation](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#check-the-sqlalchemy-documentation) $<br>$
-[HTML Documentaion](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#check-the-sqlalchemy-documentation)
-[batch file](https://stackoverflow.com/questions/44363472/simple-windows-batch-to-move-folders)
+[SQLAlchemy documentation](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#check-the-sqlalchemy-documentation) <br>
+[HTML Documentaion](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#check-the-sqlalchemy-documentation) <br>
+[batch file](https://stackoverflow.com/questions/44363472/simple-windows-batch-to-move-folders) <br>
