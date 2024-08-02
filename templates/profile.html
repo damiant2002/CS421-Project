@@ -1,30 +1,33 @@
-{% extends "base.html" %}
-{% block title %}Profile{% endblock %}
-{% block content %}
-    <h1>Update Profile</h1>
-    <div class="profile-picture">
-        <img src="{{ current_user.image_file }}" alt="Profile Picture" style="width:150px;height:150px;border-radius:50%;">
-    </div>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-            <label>{{ form.username.label }}</label>
-            {{ form.username(class="form-control") }}
-        </div>
-        <div class="form-group">
-            <label>{{ form.email.label }}</label>
-            {{ form.email(class="form-control") }}
-        </div>
-        <div class="form-group">
-            <label>{{ form.address.label }}</label>
-            {{ form.address(class="form-control") }}
-        </div>
-        <div class="form-group">
-            <label>{{ form.picture.label }}</label>
-            {{ form.picture(class="form-control") }}
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
-        </div>
-    </form>
+{% extends "base.html" %} {% block title %}Profile{% endblock %} {% block
+content %}
+<h1>Update Profile</h1>
+<div class="profile-picture">
+  <img
+    src="{{ image_file }}"
+    alt="Profile Picture"
+    style="width: 150px; height: 150px; border-radius: 50%"
+  />
+</div>
+<form method="POST" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
+    <label>{{ form.username.label }}</label>
+    {{ form.username(class="form-control") }}
+  </div>
+  <div class="form-group">
+    <label>{{ form.email.label }}</label>
+    {{ form.email(class="form-control") }}
+  </div>
+  <div class="form-group">
+    <label>{{ form.address.label }}</label>
+    {{ form.address(class="form-control") }}
+  </div>
+  <div class="form-group">
+    <label for="picture">Upload Profile Picture</label>
+    <input type="file" name="picture" id="picture" class="form-control" />
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">Update Profile</button>
+  </div>
+</form>
 {% endblock %}

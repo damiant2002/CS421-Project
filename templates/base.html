@@ -148,8 +148,6 @@
             {% endwith %}
         </div>
         <div class="tabs">
-            <a href="#">Admin</a>
-            <a href="#">Schedule</a>
             {% if not current_user.is_admin %}
                 <a href="{{ url_for('time_requests') }}">Time Requests</a>
             {% endif %}
