@@ -1,5 +1,7 @@
 source venv/bin/activate
 
+pip install Flask Flask-WTF Flask-Bcrypt Flask-Login Flask-SQLAlchemy Flask-Migrate email-validator werkzeug
+
 flask db init
 flask db migrate -m "Initial migration."
 flask db upgrade
