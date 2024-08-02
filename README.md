@@ -7,16 +7,16 @@ The Employee Management System is a web application built with Flask, designed t
 Latest version of Python.
 
 ## Execution
-To run the application, clone the repository into your chosen directory using:
+To run the application, clone the repository into your chosen directory using:<br>
 `git clone https://github.com/damiant2002/CS421-Project.git`
-then access the directory with:
+then access the directory with:<br>
 `cd CS421-Project`
 
 ### For Windows
-In powershell, run: 
-`./run_flask.bat`
-or
-`run_flask.bat`
+In powershell, run: <br>
+`./run_flask.bat`<br>
+or<br>
+`run_flask.bat`<br>
 in the command prompt.
 
 ### For MAC/Linux
