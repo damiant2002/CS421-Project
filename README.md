@@ -20,7 +20,7 @@ or
 in the command prompt.
 
 ### For MAC/Linux
-Run chmod +x run_flask.sh to make sure user has permission to execute. (We had to do this in CodeSpaces)
+Run `chmod +x run_flask.sh` to make sure user has permission to execute. (We had to do this in CodeSpaces)
 
 Run `./run_flask.sh` or `run_flask.sh` in the terminal.
 
