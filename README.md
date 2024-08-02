@@ -4,9 +4,11 @@ Created by Daniel Eleam, Jax Pendergrass, Alex Pruitt, Blaine Seaman, Damian Tuc
 The Employee Management System is a web application built with Flask, designed to manage employee information, schedules, and payroll. It allows administrators to manage employee records, add or delete shifts, and generate pay stubs. Employees can view their schedules and pay slips, and submit time-off requests.
 
 ## Requirements
-Latest version of Python.
+Latest version of Python and pip.
 
 ## Execution
+Make sure there is no antivirus or any other type of block/firewall preventing your computer from executing scripts.<br><br>
+This program runs in venv, a virtual environment for Python. A batch file (Windows) and a shell script (MAC/Linux) is provided to run all the setup automatically.<br><br>
 To run the application, clone the repository into your chosen directory using:<br><br>
 `git clone https://github.com/damiant2002/CS421-Project.git`<br><br>
 then access the directory with:<br><br>
@@ -25,6 +27,7 @@ Run `chmod +x run_flask.sh` to make sure user has permission to execute. (We had
 Run `./run_flask.sh` or `run_flask.sh` in the terminal.
 
 The program will then open in your default browser.
+
 
 ## References
 
