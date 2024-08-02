@@ -9,10 +9,13 @@ Latest version of Python and pip.
 ## Execution
 Make sure there is no antivirus or any other type of block/firewall preventing your computer from executing scripts.<br><br>
 This program runs in venv, a virtual environment for Python. A batch file (Windows) and a shell script (MAC/Linux) is provided to run all the setup automatically.<br><br>
+If you are using through Github, follow the instructions below and then proceed to the 'For Windows' or 'For MAC/Linux' sections. If you already have the files, make sure you are in the correct directory and proceed straight to the instructions for your OS.<br><br>
+### Github
 To run the application, clone the repository into your chosen directory using:<br><br>
 `git clone https://github.com/damiant2002/CS421-Project.git`<br><br>
 then access the directory with:<br><br>
-`cd CS421-Project`
+`cd CS421-Project`<br><br>
+Proceed to the instructions for your OS below.
 
 ### For Windows
 In powershell, run: <br><br>
