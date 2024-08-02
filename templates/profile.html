@@ -23,11 +23,19 @@ content %}
     {{ form.address(class="form-control") }}
   </div>
   <div class="form-group">
-    <label for="picture">Upload Profile Picture</label>
-    <input type="file" name="picture" id="picture" class="form-control" />
-  </div>
-  <div class="form-group">
-    <button type="submit" class="btn btn-primary">Update Profile</button>
-  </div>
+    <label>{{ form.picture.label }}</label>
+    {{ form.picture(class="form-control-file") }}
+</div>
+<div class="form-group">
+    <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+</div>
 </form>
+<img src="{{ image_file }}" alt="Profile Picture" width="150">
 {% endblock %}
+
+
+
+
+
+
+

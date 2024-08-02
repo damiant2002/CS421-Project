@@ -20,12 +20,18 @@ from wtforms import (
     TimeField,
     SelectField,
 )
+from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_migrate import Migrate
 from datetime import datetime
 import email_validator
 import random
+import os
+import secrets
 import math
+from werkzeug.utils import secure_filename
+
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "supersecretkey"
@@ -119,7 +125,7 @@ class UpdateProfileForm(FlaskForm):
     )
     email = StringField("Email", validators=[DataRequired(), Email()])
     address = StringField("Address", validators=[Length(max=200)])
-    picture = StringField("Profile Picture URL")
+    picture = FileField("Update Profile Picture", validators=[FileAllowed(['jpg', 'png', 'jpeg', 'webp'])])
     submit = SubmitField("Update")
 
 
@@ -269,7 +275,8 @@ def profile():
         current_user.email = form.email.data
         current_user.address = form.address.data
         if form.picture.data:
-            current_user.image_file = form.picture.data
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file
         db.session.commit()
         flash("Your account has been updated!", "success")
         return redirect(url_for("profile"))
@@ -277,9 +284,19 @@ def profile():
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.address.data = current_user.address
-        form.picture.data = current_user.image_file
-    return render_template("profile.html", title="Profile", form=form)
+        image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template("profile.html", title="Profile", form=form, image_file=image_file)
 
+UPLOAD_FOLDER = 'static/profile_pics'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)   # https://medium.com/@brodiea19/flask-sqlalchemy-how-to-upload-photos-and-render-them-to-your-webpage-84aa549ab39e
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
+    form_picture.save(picture_path)
+    return picture_fn
 
 @app.route("/logout")
 def logout():
