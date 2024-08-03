@@ -18,10 +18,13 @@ then access the directory with:<br><br>
 Proceed to the instructions for your OS below.<br><br>
 
 ### For Windows
+Find files in file explorer and double-click run_flask_windows.<br><br>
+Alternatively:<br>
+
 In powershell, run: <br><br>
-`./run_flask.bat`<br><br>
+`./run_flask_windows.bat`<br><br>
 or<br><br>
-`run_flask.bat`<br><br>
+`run_flask_windows.bat`<br><br>
 in the command prompt. <br><br>
 
 ### For MAC/Linux
