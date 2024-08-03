@@ -68,7 +68,7 @@
       <td>{{ pay.OT }}</td>
       <td>{{ pay.net }}</td>
       <td>
-        <a href="{{ url_for('delete_pay', pay_id=pay._id) }}">Delete</a>
+        <a href="{{ url_for('delete_pay', pay_id=pay.id) }}">Delete</a>
       </td>
     </tr>
     {% endfor %}
