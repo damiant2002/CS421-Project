@@ -60,7 +60,7 @@ class User(db.Model, UserMixin):
 
 
 class PayRoll(db.Model):
-    _id = db.Column("id", db.Integer, primary_key=True)
+    id = db.Column("id", db.Integer, primary_key=True)
     username = db.Column(db.String(120))
     payRate = db.Column(db.Float)
     hours = db.Column(db.Float)
@@ -325,7 +325,7 @@ def PayView():
         if not paySlip:
             rate = round(random.uniform(20, 35), 2)
 
-            paySlip = PayRoll(userName, rate, 1.0, 0, 0, 0, 0, 0, 0)
+            paySlip = PayRoll(userName, rate, 1.0, 0, 0, 0, 0)
 
             db.session.add(paySlip)
             db.session.commit()
